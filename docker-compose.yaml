@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  restfiles:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: RestFiles
+    environment:
+      - BASE_URL=http://localhost:8080
+      - AUTH_KEY=QvykFL6n4SwXrwptPDTL6EsKzBhlZLVV29ckkwrTD40z0z8DUo
+    ports:
+      - 8080:8080
+    networks:
+      - beun
+    restart: always
+
+networks:
+  beun:
+    external: true

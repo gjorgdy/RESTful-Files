@@ -116,7 +116,7 @@ public class FileController {
 	}
 
 	@GetMapping("/files/{directory}/{filename}/")
-	public ResponseEntity<InputStreamResource> serveFile(@PathVariable String directory, @PathVariable String filename) {
+	public ResponseEntity<InputStreamResource> serveFileSlash(@PathVariable String directory, @PathVariable String filename) {
 		logger.info("Requested file : " + filename);
 
 		try {
@@ -131,6 +131,11 @@ public class FileController {
 		} catch (IOException e) {
 			return ResponseEntity.ok().build();
 		}
+	}
+
+	@GetMapping("/files/{directory}/{filename}")
+	public ResponseEntity<InputStreamResource> serveFile(@PathVariable String directory, @PathVariable String filename) {
+		return serveFileSlash(directory, filename);
 	}
 
 	public static String getValidName(String directory, String basename, String fileTypeSuffix) {
@@ -161,8 +166,12 @@ public class FileController {
 
 	public static String path(String... args) {
 		StringBuilder r = new StringBuilder();
-		for (String s : args) {
-			r.append(s).append("/");
+		int l = args.length;
+		for (int i = 0 ; i < l ; i++) {
+			r.append(args[i]);
+			if (i != l - 1) {
+				r.append("/");
+			}
 		}
 		return r.toString();
 	}
